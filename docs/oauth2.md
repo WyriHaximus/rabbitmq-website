@@ -144,7 +144,7 @@ The token can be any [JWT token](https://jwt.io/introduction/) which contains th
 
 Here are two sample configuration. The first one configures two signing key files:
 
-<pre class="lang-ini">
+```ini
 auth_oauth2.resource_server_id = new_resource_server_id
 auth_oauth2.additional_scopes_key = my_custom_scope_key
 auth_oauth2.preferred_username_claims.1 = username
@@ -154,10 +154,10 @@ auth_oauth2.signing_keys.id1 = test/config_schema_SUITE_data/certs/key.pem
 auth_oauth2.signing_keys.id2 = test/config_schema_SUITE_data/certs/cert.pem
 auth_oauth2.algorithms.1 = HS256
 auth_oauth2.algorithms.2 = RS256
-</pre>
+```
 
 And a second one which configures a signing key server:
-<pre class="lang-ini">
+```ini
 auth_oauth2.resource_server_id = new_resource_server_id
 auth_oauth2.jwks_url = https://my-jwt-issuer/jwks.json
 auth_oauth2.https.cacertfile = test/config_schema_SUITE_data/certs/cacert.pem
@@ -349,31 +349,32 @@ Before RabbitMQ 3.13, users had to set the JWKS endpoint (i.e. `auth_oauth2.jwks
 Typically, this same `issuer` URL has been the same URL configured in the management plugin (`management.oauth_provider_url`). From now on, it is only necessary to configure a single URL, specified by the `auth_oauth2.issuer` setting.
 
 Sample configuration using issuer:
-<pre class="lang-ini">
+```ini
 auth_oauth2.resource_server_id = my_rabbit_server
 auth_oauth2.issuer = https://my-idp-provider/somerealm
-</pre>
+```
 
 or
 
-<pre class="lang-erlang">
+
+```erlang
 [
   {rabbitmq_auth_backend_oauth2, [
     {resource_server_id, &lt;&lt;"my_rabbit_server">>},
     {issuer, &lt;&lt;"https://my-idp-provider/somerealm">>}    
   ]},
 ].
-</pre>
+```
 
 Sample configuration using jwks_url:
-<pre class="lang-ini">
+```ini
 auth_oauth2.resource_server_id = my_rabbit_server
 auth_oauth2.jwks_url = "https://my-jwt-issuer/jwks.json
-</pre>
+```
 
 or
 
-<pre class="lang-erlang">
+```erlang
 [
   {rabbitmq_auth_backend_oauth2, [
     {resource_server_id, &lt;&lt;"my_rabbit_server">>},
@@ -382,21 +383,21 @@ or
     ]}
   ]},
 ].
-</pre>
+```
 
 **Note**: If you have both endpoints configured, RabbitMQ will use `jwks_url` given that it does not have to discover it via the `issuer` url.
 
 **Note about TLS settings for the `jwks_url` or the `issuer` url**: TLS setting such as the `cacertfile` are configured as follows regardless which url we are using:
 
-<pre class="lang-ini">
+```ini
 ...
 auth_oauth2.https.cacertfile = /opts/certs/cacert.pem
 ...
-</pre>
+```
 
 or
 
-<pre class="lang-erlang">
+```erlang
 [
   {rabbitmq_auth_backend_oauth2, [
     ...
@@ -405,7 +406,7 @@ or
     ]}
   ]},
 ].
-</pre>
+```
 
 
 ## <a id="configure-signing-keys" class="anchor" href="#configure-signing-keys">Configure Signing Keys</a>
@@ -422,7 +423,7 @@ The following fields are required: `kty`, `value`, `alg`, and `kid`.
 
 Assuming UAA reports the following signing key information:
 
-<pre class="lang-erlang">
+```
 uaac signing key
   kty: RSA
   e: AQAB
@@ -440,11 +441,11 @@ VwIDAQAB
 -----END PUBLIC KEY-----
   n: ANnT_r0Z_io_kv6BnePZKuvgijQHbggta2i30x-wd6o5mWJuOcg5fl5oCvQjZh15IaPar5oXZLHcw1bHXg5YSiHXCFmnYag83bZ9YY_9tolMK4R9G3eO-YZSnLImfqMv7HYBoAM75pk0JnTKhF6ldgfavShQZqOAIYf-vneMDNax_ZMZdEbzACi3vnWqCByI6JPIQju
       HCkEBMPxKwXuEhdnK98EMAnxdalbuHgFTVX8X8v7hLxt0O8dNOT903CvkHGICcWr95YnLUouXcli4BkAL5JJ1oraUSvClS8qRI-Vino-ghfJ6t9LrZ9eRUINCZB6Ks8Igqqnnp_BiD7XiO1c
-</pre>
+```
 
 it will translate into the following configuration (in the [advanced RabbitMQ config format](https://www.rabbitmq.com/configure.html)):
 
-<pre class="lang-erlang">
+```erlang
 [
   %% ...
   %% backend configuration
@@ -466,11 +467,11 @@ VwIDAQAB
       ]}
     ]}
 ].
-</pre>
+```
 
 If a symmetric key is used, the configuration will look like this:
 
-<pre class="lang-erlang">
+```erlang
 [
   {rabbitmq_auth_backend_oauth2, [
     {resource_server_id, &lt;&lt;"my_rabbit_server">>},
@@ -483,7 +484,7 @@ If a symmetric key is used, the configuration will look like this:
     ]}
   ]},
 ].
-</pre>
+```
 
 ### <a id="use-different-token-field" class="anchor" href="#use-different-token-field">Using a different token field for the Scope</a>
 
