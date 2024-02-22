@@ -525,13 +525,14 @@ Most authorization servers return the user's GUID in the `sub` claim instead of 
 
 Example `advanced.config` configuration:
 
-```erlang
+```
   ...
   {rabbitmq_auth_backend_oauth2, [
-    {resource_server_id, &lt;&lt;"rabbitmq"&gt;&gt;},
-    {preferred_username_claims, [&lt;&lt;"user_name"&gt;&gt;,&lt;&lt;"email"&gt;&gt;]},
+    {resource_server_id, <<"rabbitmq">>},
+    {preferred_username_claims, [<<"user_name">>,<<"email">>]},
   ...
 ```
+
 In the example configuration, RabbitMQ searches for the `user_name` claim first and if it is not found, RabbitMQ searches for the `email`. If these are not found, RabbitMQ uses its default lookup mechanism which first looks for `sub` and then `client_id`.
 
 ### <a id="rich-authorization-request" class="anchor" href="#rich-authorization-request">Rich Authorization Request</a>
@@ -587,7 +588,7 @@ zero or many locations.
 
 A location consists of a list of key-value pairs separated by forward slash `/` character. Here is the format:
 ```bash
-cluster:&lt;resource_server_id_pattern>[/vhost:&lt;vhost_pattern>][/queue:&lt;queue_name_pattern>|/exchange:&lt;exchange_name_pattern][/routing-key:&lt;routing_key_pattern>]
+cluster:<resource_server_id_pattern>[/vhost:<vhost_pattern>][/queue:<queue_name_pattern>|/exchange:<exchange_name_pattern>][/routing-key:<routing_key_pattern>]
 ```
 
 Any string separated by `/` which does not conform to `&lt;key>:&lt;value>` is ignored. For instance, if your locations start with a prefix, e.g. `vrn/cluster:rabbitmq`, the `vrn` pattern part is ignored.
@@ -661,7 +662,7 @@ In the following RAR example
 }
 ```
 
-if RabbitMQ node's `resource_server_id` is equal to `finance`, the plugin will compute the following sets of scopes:
+if RabbitMQ nodes `resource_server_id` is equal to `finance`, the plugin will compute the following sets of scopes:
 
 - `finance.read:primary-*/*/*`
 - `finance.write:primary-*/*/*`
